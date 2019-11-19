@@ -3,7 +3,32 @@
   <component name="ChangeListManager">
     <list default="true" id="1a44a216-d3d9-4d17-b698-186ec57bf9de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/store.db" beforeDir="false" afterPath="$PROJECT_DIR$/Data/store.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddCustomer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddCustomer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddCustomer$AddButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddCustomer$AddButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddCustomer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddCustomer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddProductUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddProductUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddProductUI$AddButtonListerner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddProductUI$AddButtonListerner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddProductUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddProductUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI$AddButtonListerner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI$AddButtonListerner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI$CustomerIDFocusListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI$CustomerIDFocusListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI$ProductIDFocusListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI$ProductIDFocusListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI$QuantityChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI$QuantityChangeListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddPurchaseUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddPurchaseUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/CustomerModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/CustomerModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/IDataAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/IDataAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/IReceiptBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/IReceiptBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MainUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MainUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MainUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MainUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MainUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MainUI$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MainUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MainUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/OracleDataAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/OracleDataAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ProductModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ProductModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/PurchaseModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/PurchaseModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SQLiteDataAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SQLiteDataAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StoreManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/StoreManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/TXTReceiptBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/TXTReceiptBuilder.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +48,9 @@
   </component>
   <component name="ProjectId" id="1RwXC42kPlIRP0jGLa0HdCOjjEW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>

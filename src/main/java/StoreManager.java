@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class StoreManager {
     public static final String DBMS_SQ_LITE = "SQLite";
-    public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\Assignment12Deliverables\\Data\\store.db";
+    public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
 
     IDataAdapter adapter = null;
     private static StoreManager instance = null;

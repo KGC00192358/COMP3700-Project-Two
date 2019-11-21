@@ -280,6 +280,7 @@ public class AddPurchaseUI {
                 default:
                     JOptionPane.showMessageDialog(null, "Purchase added successfully!" + purchase);
             }
+           // StoreManager.getInstance().getDataAdapter().get
         }
     }
 

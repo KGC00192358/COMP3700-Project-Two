@@ -10,6 +10,10 @@ public class MainUI {
     public JButton btnAddProduct = new JButton("Add New Product");
     public JButton btnAddCustomer = new JButton("Add New Customer");
     public JButton btnAddPurchase = new JButton("Add New Purchase");
+    public JButton btnEditProduct = new JButton("Edit Product");
+    public JButton btnEditCustomer = new JButton("Edit Customer");
+    public JButton btnEditPurchase = new JButton("Edit Purchase");
+
 
     public MainUI() {
         this.view = new JFrame();
@@ -28,6 +32,9 @@ public class MainUI {
         panelButtons.add(btnAddProduct);
         panelButtons.add(btnAddCustomer);
         panelButtons.add(btnAddPurchase);
+        panelButtons.add(btnEditProduct);
+        panelButtons.add(btnEditCustomer);
+        panelButtons.add(btnEditPurchase);
         view.getContentPane().add(panelButtons);
 
         btnAddProduct.addActionListener(new ActionListener() {

@@ -1,10 +1,15 @@
 
+import java.io.DataOutputStream;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SQLiteDataAdapter implements IDataAdapter {
 
@@ -40,12 +45,12 @@ public class SQLiteDataAdapter implements IDataAdapter {
         ProductModel product = null;
 
         try {
-            String sql = "SELECT ProductId, Name, Price, Quantity FROM Products WHERE ProductId = " + productID;
+            String sql = "SELECT ProductID, Name, Price, Quantity FROM Products WHERE ProductID = " + productID;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 product = new ProductModel();
-                product.mProductID = rs.getInt("ProductId");
+                product.mProductID = rs.getInt("ProductID");
                 product.mName = rs.getString("Name");
                 product.mPrice = rs.getDouble("Price");
                 product.mQuantity = rs.getDouble("Quantity");
@@ -56,9 +61,10 @@ public class SQLiteDataAdapter implements IDataAdapter {
         }
         return product;
     }
+
     public int saveProduct(ProductModel product) {
         try {
-            String sql = "INSERT INTO Products(ProductId, Name, Price, Quantity) VALUES " + product;
+            String sql = "INSERT INTO Products(mProductID, mName, mPrice, mQuantity) VALUES " + product;
             System.out.println(sql);
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -73,6 +79,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         return PRODUCT_SAVED_OK;
     }
+
     public PurchaseModel loadPurchase(int PurchaseID) {
         PurchaseModel purchase = null;
 
@@ -93,6 +100,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
         }
         return purchase;
     }
+
     public int savePurchase(PurchaseModel purchase) {
         try {
             String sql = "INSERT INTO Purchases VALUES " + purchase;
@@ -110,6 +118,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
         return PURCHASE_SAVED_OK;
 
     }
+
     public int saveCustomer(CustomerModel cust) {
         try {
             String sql = "INSERT INTO Customers VALUES " + cust;
@@ -124,6 +133,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
         }
         return CUSTOMER_SAVED_OK;
     }
+
     public CustomerModel loadCustomer(int id) {
         CustomerModel customer = null;
 
@@ -143,5 +153,44 @@ public class SQLiteDataAdapter implements IDataAdapter {
             System.out.println(e.getMessage());
         }
         return customer;
+    }
+
+    public void saveProductOverHttp(ProductModel prod) throws Exception {
+        URL req_url = new URL("http://localhost:8080/SaveProduct?id=" );
+        HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
+        con.setRequestMethod("GET");
+    }
+    public void sgetProductOverHttp(int id) throws Exception {
+        URL req_url = new URL("http://localhost:8080/Product" );
+        HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
+        con.setRequestMethod("GET");
+
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("id", "10");
+
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+        out.flush();
+        out.close();
+    }
+
+    private static class ParameterStringBuilder {
+        public static String getParamsString(Map<String, String> params) throws Exception {
+            StringBuilder result = new StringBuilder();
+
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                result.append("&");
+            }
+
+            String resultString = result.toString();
+            return resultString.length() > 0
+                    ? resultString.substring(0, resultString.length() - 1)
+                    : resultString;
+        }
+
     }
 }

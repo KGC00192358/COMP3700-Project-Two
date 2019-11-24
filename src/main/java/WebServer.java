@@ -68,6 +68,8 @@ public class WebServer {
             }
             catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                adapter.disconnect();
             }
 
         }
@@ -76,6 +78,7 @@ public class WebServer {
 
         public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
         public void handle(HttpExchange exchange) throws IOException {
+            boolean error = false;
             SQLiteDataAdapter adapter = new SQLiteDataAdapter();
             adapter.connect(DB_FILE);
             StringBuilder response = new StringBuilder();
@@ -90,33 +93,39 @@ public class WebServer {
             switch (adapter.deleteProductById(prod_to_save.mProductID)) {
                 case 1:
                     response.append("Delete Portion Failed: Unspecified");
+                    error = true;
                     break;
                 case -1:
                     response.append("Delete Portion Failed: Unspecified SQL Error");
+                    error = true;
                     break;
                 case -2:
                     response.append("Delete Portion Failed: Not Found");
+                    error = true;
                     break;
                 default:
                     response.append("Delete Portion Success");
                     break;
             }
-            switch (adapter.saveProduct(prod_to_save)) {
-                case -1:
-                    response.append("Failed: Unspecified");
-                    break;
-                case 1:
-                    response.append("Failed: Duplicate");
-                    break;
-                default:
-                    response.append("Success");
-                    break;
+            if(!error) {
+                switch (adapter.saveProduct(prod_to_save)) {
+                    case -1:
+                        response.append("Failed: Unspecified");
+                        break;
+                    case 1:
+                        response.append("Failed: Duplicate");
+                        break;
+                    default:
+                        response.append("Success");
+                        break;
+                }
             }
 
             exchange.sendResponseHeaders(200, response.length());//response code and length
             OutputStream os = exchange.getResponseBody();
             os.write(response.toString().getBytes());
             os.close();
+            adapter.disconnect();
         }
     }
     static class saveProductRequestHandler implements HttpHandler {
@@ -151,6 +160,7 @@ public class WebServer {
             OutputStream os = exchange.getResponseBody();
             os.write(response.toString().getBytes());
             os.close();
+            adapter.disconnect();
         }
     }
 }

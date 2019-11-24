@@ -41,6 +41,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
             System.out.println(e.getMessage());
             return CONNECTION_CLOSE_FAILED;
         }
+        System.out.println("Connection Closed.");
         return CONNECTION_CLOSE_OK;
     }
 
@@ -93,7 +94,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
         try {
             String sql = "DELETE FROM Products WHERE mProductID = " + String.valueOf(id);
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
                String msg = e.getMessage();
                System.out.println(e.getMessage());

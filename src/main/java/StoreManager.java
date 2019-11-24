@@ -33,7 +33,7 @@ public class StoreManager {
             sqlAdapter = (SQLiteDataAdapter) adapter;
 
         helper = new WebHelper();
-        adapter.connect(dbfile);
+       // adapter.connect(dbfile);
     }
 
     public IDataAdapter getDataAdapter() {

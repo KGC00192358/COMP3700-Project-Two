@@ -62,7 +62,7 @@ public class MainUI {
         });
         btnEditProduct.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                LoadingUI ld = new LoadingUI();
+                LoadingUI ld = new LoadingUI("Product");
                 ld.run();
             }
         });

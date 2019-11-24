@@ -21,6 +21,9 @@ public class WebServer {
         context.setHandler(new productRequestHandler());
         context = server.createContext("/SaveProduct");
         context.setHandler(new saveProductRequestHandler());
+        context = server.createContext("/UpdateProduct");
+        context.setHandler(new updateProductRequestHandler());
+
         server.start();
     }
 
@@ -70,11 +73,49 @@ public class WebServer {
         }
     }
     static class updateProductRequestHandler implements  HttpHandler {
+
+        public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
         public void handle(HttpExchange exchange) throws IOException {
-            String response = "Hi there!";
-            exchange.sendResponseHeaders(200, response.getBytes().length);//response code and length
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter();
+            adapter.connect(DB_FILE);
+            StringBuilder response = new StringBuilder();
+
+            String query = exchange.getRequestURI().getQuery();
+            String[] information = query.split("&");
+            ProductModel prod_to_save = new ProductModel();
+            prod_to_save.mProductID = Integer.parseInt(information[0].substring(information[0].indexOf("=") + 1));
+            prod_to_save.mName = information[1].substring(information[1].indexOf("=") + 1);
+            prod_to_save.mPrice = Double.parseDouble(information[2].substring(information[2].indexOf("=") + 1));
+            prod_to_save.mQuantity = Double.parseDouble(information[3].substring(information[3].indexOf("=") + 1));
+            switch (adapter.deleteProductById(prod_to_save.mProductID)) {
+                case 1:
+                    response.append("Delete Portion Failed: Unspecified");
+                    break;
+                case -1:
+                    response.append("Delete Portion Failed: Unspecified SQL Error");
+                    break;
+                case -2:
+                    response.append("Delete Portion Failed: Not Found");
+                    break;
+                default:
+                    response.append("Delete Portion Success");
+                    break;
+            }
+            switch (adapter.saveProduct(prod_to_save)) {
+                case -1:
+                    response.append("Failed: Unspecified");
+                    break;
+                case 1:
+                    response.append("Failed: Duplicate");
+                    break;
+                default:
+                    response.append("Success");
+                    break;
+            }
+
+            exchange.sendResponseHeaders(200, response.length());//response code and length
             OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
+            os.write(response.toString().getBytes());
             os.close();
         }
     }

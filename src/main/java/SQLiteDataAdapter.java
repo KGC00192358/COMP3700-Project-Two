@@ -89,6 +89,24 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         return PRODUCT_SAVED_OK;
     }
+    public int deleteProductById(int id) {
+        try {
+            String sql = "DELETE FROM Products WHERE mProductID = " + String.valueOf(id);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+               String msg = e.getMessage();
+               System.out.println(e.getMessage());
+               if (msg.contains("Not Found")) {
+                   return -2;
+               } else {
+                   return -1;
+               }
+        } catch (Exception e) {
+            return 1;
+        }
+        return 0;
+    }
 
     public PurchaseModel loadPurchase(int PurchaseID) {
         PurchaseModel purchase = null;
@@ -204,6 +222,46 @@ public class SQLiteDataAdapter implements IDataAdapter {
         return 0;
 
     }
+    public int updateProductOverHttp(ProductModel prod)  {
+        try {
+            String URLString = "http://localhost:8080/UpdateProduct";
+            Map<String, String> parameters = new LinkedHashMap<String, String>();
+            parameters.put("id", String.valueOf(prod.mProductID));
+            parameters.put("Name", prod.mName);
+            parameters.put("Price", String.valueOf(prod.mPrice));
+            parameters.put("Quantity", String.valueOf(prod.mQuantity));
+            URLString += ParameterStringBuilder.getParamsString(parameters);
+            URL req_url = new URL(URLString);
+            HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            out.flush();
+            out.close();
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            System.out.println(content);
+            in.close();
+            if (content.toString().contains("Error")) {
+                return -1;
+            } else if (content.toString().contains("Duplicate")) {
+                return PRODUCT_DUPLICATE_ERROR;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+
     public ProductModel getProductOverHttp(String id)  {
         ProductModel ret = new ProductModel();
         try {

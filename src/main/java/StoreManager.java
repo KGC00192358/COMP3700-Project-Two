@@ -5,6 +5,7 @@ public class StoreManager {
     public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
 
     IDataAdapter adapter = null;
+    SQLiteDataAdapter sqlAdapter = null;
     WebHelper helper = null;
     private static StoreManager instance = null;
 
@@ -29,6 +30,7 @@ public class StoreManager {
         else
         if (dbms.equals("SQLite"))
             adapter = new SQLiteDataAdapter();
+            sqlAdapter = (SQLiteDataAdapter) adapter;
 
         helper = new WebHelper();
         adapter.connect(dbfile);
@@ -36,6 +38,9 @@ public class StoreManager {
 
     public IDataAdapter getDataAdapter() {
         return adapter;
+    }
+    public SQLiteDataAdapter getSQLDataAdapter() {
+        return sqlAdapter;
     }
 
     public void setDataAdapter(IDataAdapter a) {

@@ -1,5 +1,7 @@
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -9,6 +11,7 @@ import java.sql.SQLException;
 
 import java.net.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SQLiteDataAdapter implements IDataAdapter {
@@ -45,15 +48,15 @@ public class SQLiteDataAdapter implements IDataAdapter {
         ProductModel product = null;
 
         try {
-            String sql = "SELECT ProductID, Name, Price, Quantity FROM Products WHERE ProductID = " + productID;
+            String sql = "SELECT mProductID, mName, mPrice, mQuantity FROM Products WHERE mProductID = " + productID;
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 product = new ProductModel();
-                product.mProductID = rs.getInt("ProductID");
-                product.mName = rs.getString("Name");
-                product.mPrice = rs.getDouble("Price");
-                product.mQuantity = rs.getDouble("Quantity");
+                product.mProductID = rs.getInt("mProductID");
+                product.mName = rs.getString("mName");
+                product.mPrice = rs.getDouble("mPrice");
+                product.mQuantity = rs.getDouble("mQuantity");
             }
 
         } catch (SQLException e) {
@@ -69,12 +72,19 @@ public class SQLiteDataAdapter implements IDataAdapter {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
 
+        } catch (SQLException e) {
+            String msg = e.getMessage();
+            System.out.println(msg);
+            if (msg.contains("UNIQUE constraint failed")) {
+                return PRODUCT_DUPLICATE_ERROR;
+        }
         } catch (Exception e) {
             String msg = e.getMessage();
             System.out.println(msg);
             /*if (msg.contains("UNIQUE constraint failed"))
                 return PRODUCT_DUPLICATE_ERROR;*/
             System.out.println(msg);
+            return -1;
         }
 
         return PRODUCT_SAVED_OK;
@@ -155,29 +165,100 @@ public class SQLiteDataAdapter implements IDataAdapter {
         return customer;
     }
 
-    public void saveProductOverHttp(ProductModel prod) throws Exception {
-        URL req_url = new URL("http://localhost:8080/SaveProduct?id=" );
-        HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
-        con.setRequestMethod("GET");
+    public int saveProductOverHttp(ProductModel prod)  {
+        try {
+            String URLString = "http://localhost:8080/SaveProduct";
+            Map<String, String> parameters = new LinkedHashMap<String, String>();
+            parameters.put("id", String.valueOf(prod.mProductID));
+            parameters.put("Name", prod.mName);
+            parameters.put("Price", String.valueOf(prod.mPrice));
+            parameters.put("Quantity", String.valueOf(prod.mQuantity));
+            URLString += ParameterStringBuilder.getParamsString(parameters);
+            URL req_url = new URL(URLString);
+            HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            out.flush();
+            out.close();
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            System.out.println(content);
+            in.close();
+            if (content.toString().contains("Unspecified")) {
+                return -1;
+            } else if (content.toString().contains("Duplicate")) {
+                return PRODUCT_DUPLICATE_ERROR;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+
     }
-    public void sgetProductOverHttp(int id) throws Exception {
-        URL req_url = new URL("http://localhost:8080/Product" );
-        HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
-        con.setRequestMethod("GET");
+    public ProductModel getProductOverHttp(String id)  {
+        ProductModel ret = new ProductModel();
+        try {
+            String URLString = "http://localhost:8080/Product";
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put("id", id);
+            URLString += ParameterStringBuilder.getParamsString(parameters);
+            URL req_url = new URL(URLString);
 
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("id", "10");
+            HttpURLConnection con = (HttpURLConnection) req_url.openConnection();
+            con.setRequestMethod("GET");
 
-        con.setDoOutput(true);
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
-        out.flush();
-        out.close();
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            out.flush();
+            out.close();
+
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            System.out.println(content);
+            in.close();
+            if(content.toString().compareTo("No Product Loaded!") != 0) {
+                String info = content.toString();
+                String[] contentInfo = info.split(",");
+                ret.mProductID = Integer.parseInt(contentInfo[0]);
+                ret.mName = contentInfo[1];
+                ret.mPrice = Double.parseDouble(contentInfo[2]);
+                ret.mQuantity = Double.parseDouble(contentInfo[3]);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+        }
+        return ret;
+    }
+    public CustomerModel getCustomerOverHttp(String id) {
+        return new CustomerModel();
+    }
+    public PurchaseModel getPurchaseOverHttp(String id) {
+        return new PurchaseModel();
     }
 
     private static class ParameterStringBuilder {
         public static String getParamsString(Map<String, String> params) throws Exception {
             StringBuilder result = new StringBuilder();
+            result.append("?");
 
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));

@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1a44a216-d3d9-4d17-b698-186ec57bf9de" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/WebHelper.java" afterDir="false" />
+    <list default="true" id="1a44a216-d3d9-4d17-b698-186ec57bf9de" name="Default Changelist" comment="Can save and load a product over HTTP">
+      <change afterPath="$PROJECT_DIR$/src/main/java/EditCustomerUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/EditProductUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/EditPurchaseUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/LoadingUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/db.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/AddPurchaseUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AddPurchaseUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/store.db" beforeDir="false" afterPath="$PROJECT_DIR$/Data/store.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/User Stories.docx" beforeDir="false" afterPath="$PROJECT_DIR$/doc/User Stories.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/~$er Stories.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AddProductUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AddProductUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SQLiteDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SQLiteDataAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/StoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StoreManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/WebServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/WebServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AddProductUI$AddButtonListerner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AddProductUI$AddButtonListerner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/MainUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/MainUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/SQLiteDataAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SQLiteDataAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StoreManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/StoreManager.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +60,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.WebServer">
+  <component name="RunManager" selected="Application.StoreManager">
     <configuration name="StoreManager" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="StoreManager" />
       <module name="Assignment12Deliverables" />
@@ -98,5 +106,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Can save and load a product over HTTP" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can save and load a product over HTTP" />
   </component>
 </project>

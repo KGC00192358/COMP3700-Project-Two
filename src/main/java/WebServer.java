@@ -35,65 +35,80 @@ public class WebServer {
     }
 
     static class productRequestHandler implements HttpHandler {
+        public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
         public void handle(HttpExchange exchange) throws IOException {
+            IDataAdapter adapter = new SQLiteDataAdapter();
+            adapter.connect(DB_FILE);
             StringBuilder response = new StringBuilder();
-            response.append("<html><body>");
 
             String query = exchange.getRequestURI().getQuery();
             String full_query = exchange.getRequestURI().getQuery();
             int pos = query.indexOf("=");
             int id = Integer.parseInt(query.substring(pos + 1));
 
-            response.append("<h3>Hi there! You want to ask about product id = " + id);
-            response.append("Full Query: " + full_query);
-
-            String dbfile = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
-            String url = "jdbc:sqlite:" + dbfile;
             try {
-                Connection conn = DriverManager.getConnection(url);
-
-                String sql = "SELECT * FROM Products WHERE mProductID = " + Integer.toString(id);
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-
-                response.append("<table border = '1'>");
-                response.append("<th>ProductID</th>");
-                response.append("<th>Product Name</th>");
-                response.append("<th>Price</th>");
-                response.append("<th>Availability</th>");
-
-                while (rs.next()) {
-                    response.append("<tr><td>" + rs.getInt("mProductID") + "</td>");
-                    response.append("    <td>" + rs.getString("mName") + "</td>");
-                    response.append("    <td>" + rs.getDouble("mPrice") + "</td>");
-                    double quant = rs.getDouble("mQuantity");
-                    String status;
-                    if (quant > 0)
-                        status = "In stock";
-                    else
-                        status = "Out of stock";
-                    response.append("    <td>" + status + "</td></tr>");
-                }
-                response.append("</table>");
-                conn.close();
-            } catch (Exception e) {
+                ProductModel prod = adapter.loadProduct(id);
+                response.append(prod.mProductID);
+                response.append("," + prod.mName);
+                response.append("," + prod.mPrice);
+                response.append("," + prod.mQuantity);
+                exchange.sendResponseHeaders(200, response.length());//response code and length
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.toString().getBytes());
+                os.close();
+            } catch (java.lang.NullPointerException e) {
+                response.append("No Product Loaded!");
+                exchange.sendResponseHeaders(201, response.length());//response code and length
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.toString().getBytes());
+                os.close();
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
 
-
-            response.append("</body></html>");
-            exchange.sendResponseHeaders(200, response.length());//response code and length
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.toString().getBytes());
-            os.close();
         }
     }
-    static class saveProductRequestHandler implements HttpHandler {
+    static class updateProductRequestHandler implements  HttpHandler {
         public void handle(HttpExchange exchange) throws IOException {
             String response = "Hi there!";
             exchange.sendResponseHeaders(200, response.getBytes().length);//response code and length
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
+            os.close();
+        }
+    }
+    static class saveProductRequestHandler implements HttpHandler {
+        public static final String DB_FILE = "C:\\Users\\Kevin\\IdeaProjects\\ProjectTwo\\Data\\store.db";
+        public void handle(HttpExchange exchange) throws IOException {
+            IDataAdapter adapter = new SQLiteDataAdapter();
+            adapter.connect(DB_FILE);
+            StringBuilder response = new StringBuilder();
+
+            String query = exchange.getRequestURI().getQuery();
+            String[] information = query.split("&");
+            ProductModel prod_to_save = new ProductModel();
+            prod_to_save.mProductID = Integer.parseInt(information[0].substring(information[0].indexOf("=") + 1));
+            prod_to_save.mName = information[1].substring(information[1].indexOf("=") + 1);
+            prod_to_save.mPrice = Double.parseDouble(information[2].substring(information[2].indexOf("=") + 1));
+            prod_to_save.mQuantity = Double.parseDouble(information[3].substring(information[3].indexOf("=") + 1));
+
+            switch (adapter.saveProduct(prod_to_save)) {
+                case -1:
+                    response.append("Failed: Unspecified");
+                    break;
+                case 1:
+                    response.append("Failed: Duplicate");
+                    break;
+                default:
+                    response.append("Success");
+                    break;
+            }
+
+
+            exchange.sendResponseHeaders(200, response.length());//response code and length
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.toString().getBytes());
             os.close();
         }
     }
